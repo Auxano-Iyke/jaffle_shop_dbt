@@ -12,7 +12,7 @@ clean-targets:
 
 models:
   jaffle:
-    aggregates:
+    metrics:
       +schema: jaffle_agg
       +materialized: table
       +docs:

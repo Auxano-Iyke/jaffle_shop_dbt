@@ -1,0 +1,66 @@
+
+model-paths:
+  - models
+analysis-paths:
+  - analyses
+macro-paths:
+  - macros
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  jaffle:
+    aggregates:
+      +schema: jaffle_agg
+      +materialized: table
+      +docs:
+        node_color: "#FFD700"
+
+    core:
+      +schema: jaffle_core
+      +materialized: table
+      +docs:
+        node_color: "#006400"
+
+    intermediate:
+      +schema: jaffle_imd
+      +materialized: table
+      +docs:
+        node_color: "#4f42b5"
+
+    staging:
+      +schema: jaffle_stg
+      +materialized: view
+      +docs:
+        node_color: "#FFA500"
+
+name: "jaffle_shop_dbt"
+profile: "jaffle_shop_dbt"
+
+seed-paths:
+  - seeds
+seeds:
+  +schema: jaffle_stg
+  +docs:
+    node_color: "#FFA500"
+
+snapshot-paths:
+  - snapshots
+snapshots:
+  +docs:
+    node_color: "#FFA500"
+
+target-path: target
+
+test-paths:
+  - tests
+
+vars:
+  null_default_string: "'null'"
+  surrogate_key_treat_nulls_as_empty_strings: true
+
+version: 1.0.0
+
+

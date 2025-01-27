@@ -1,0 +1,119 @@
+version: 2
+sources:
+  - name: jaffle_data
+    description: "TBD"
+    database: ADB
+    tables:
+      - name: raw_items
+        description: "This is the raw orders items table"
+        columns:
+          - name: id
+            description: "Unique identifier for each item"
+            tests:
+              - not_null
+              - unique
+          - name: order_id
+            description: "Identifier for the order"
+          - name: sku
+            description: "Stock keeping unit for the product"
+      - name: raw_order
+        description: "This is the raw orders for the jaffle data table"
+        columns:
+          - name: id
+            description: "Order identifier"
+            tests:
+              - not_null
+              - unique
+          - name: customer_id
+            description: "ID of the customer"
+          - name: store_id
+            description: "ID of the store"
+          - name: order_date
+            description: "Date the order was placed"
+          - name: tax
+            description: "Tax applied on the order"
+          - name: gross_revenue
+            description: "Gross revenue from the order"
+          - name: net_revenue
+            description: "Net revenue after taxes and discounts"
+      - name: raw_supply
+        description: "TBD"
+        columns:
+          - name: id
+            description: "Unique identifier for each supply"
+            tests:
+              - not_null
+          - name: cost
+            description: "TBD"
+          - name: sku
+            description: "TBD"
+          - name: perishable
+            description: "TBD"
+            tests:
+              - accepted_values:
+                  values: ["TRUE", "FALSE"]
+          - name: name
+            description: "TBD"
+      - name: raw_customers
+        description: "This the raw customers table"
+        columns:
+          - name: id
+            description: "Unique identifier for each customer"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the customer"
+      - name: raw_products
+        description: "This is the raw products table"
+        columns:
+          - name: sku
+            description: "TBD"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the product"
+          - name: description
+            description: "Description of the product"
+          - name: price
+            description: "Price of the product"
+          - name: type
+            description: "TBD"
+      - name: raw_stores
+        description: "This is the table containing the stores data"
+        columns:
+          - name: id
+            description: "Unique identifier for each store"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the store"
+          - name: tax_rate
+            description: "TBD"
+          - name: opened_at
+            description: "TBD"
+
+  - name: stripe
+    description: "TBD"
+    database: ADB
+    tables:
+      - name: raw_payments
+        description: "This is the raw orders payments table"
+        columns:
+          - name: id
+            description: "Unique identifier for each payment"
+            tests:
+              - not_null
+              - unique
+          - name: order_id
+            description: "Identifier for the order"
+          - name: payment_method
+            description: "order payment method"
+            tests:
+              - accepted_values:
+                  values:
+                    ["bank_transfer", "credit_card", "coupon", "gift_card"]
+          - name: amount
+            description: "Amount of the payment"

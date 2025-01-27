@@ -1,0 +1,57 @@
+semantic_models:
+  - name: order_items
+    defaults:
+      agg_time_dimension: order_date
+    description: |
+      Order item fact table. This table is at the order item grain with one row per order item.
+    model: ref('fct_order_items')
+    entities:
+      - name: order_item_id
+        type: primary
+      - name: order
+        type: foreign
+        expr: order_id
+      - name: product
+        type: foreign
+        expr: product_id
+    dimensions:
+      - name: order_date
+        expr: date_trunc('day', order_date)
+        type: time
+        type_params:
+          time_granularity: day
+      # - name: is_food_item
+      #   type: categorical
+      # - name: is_drink_item
+      #   type: categorical
+    measures:
+      - name: product_price
+        description: The price of the product.
+        agg: sum
+      - name: product_cost
+        description: The cost of the product.
+        agg: sum
+      - name: product_gross_margin
+        description: The gross margin of the product.
+        agg: sum
+        expr: product_price - product_cost
+      # - name: product_gross_margin_pct
+      #   description: The gross margin percentage of the product.
+      #   agg: avg
+      #   expr: (product_price - product_cost) / product_price
+      - name: product_count
+        description: The count of the product.
+        agg: sum 
+        expr: 1
+      - name: product_count_distinct
+        description: The count of the product.
+        agg: count_distinct
+        expr: product_id
+      - name: is_food_item
+        description: The count of the food item.
+        agg: sum_boolean
+        expr: is_food_item
+      - name: is_drink_item
+        description: The count of the drink item.
+        agg: sum_boolean
+        expr: is_drink_item

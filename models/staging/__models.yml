@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: stg__order_items
+    description: "This model processes the raw order items data"
+    columns:
+      - name: order_item_id
+        description: "Unique identifier for each order item"
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: "Stock keeping unit for the product"
+      - name: order_id
+        description: "Identifier for the order"
+ 
+  - name: stg__orders
+    description: "This model processes the raw orders data"
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "ID of the customer"
+      - name: location_id
+        description: "ID of the store"
+      - name: order_date
+        description: "Date the order was placed"
+      - name: tax
+        description: "Tax applied on the order"
+      - name: order_total
+        description: "total order value"
+
+
+
+  - name: stg__customers
+    description: "This model processes the raw customer data"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        description: "Name of the customer"
+
+  - name: stg__products
+    description: "TBD"
+    columns:
+      - name: product_id
+        description: "Stock keeping unit for the product"
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: "Name of the product"
+      - name: product_description
+        description: "Description of the product"
+      - name: is_food_item
+        description: "Type of the product- food"
+      - name: is_drink_item
+        description: "Type of the product- drink"
+      - name: product_price
+        description: "Price of the product"
+
+  - name: stg__stores
+    description: "TBD"
+    columns:
+      - name: store_id
+        description: "Unique identifier for each store"
+        tests:
+          - not_null
+          - unique
+      - name: store_name
+        description: "Name of the store"
+      - name: store_tax_rate
+        description: "Tax rate for the store"
+      - name: store_opened_at
+        description: "Date the store was opened"
+
+  - name: stg__supplies
+    description: "TBD"
+    columns:
+      - name: supply_uuid
+        description: "Unique identifier for each supplier"
+        tests:
+          - not_null
+      - name: supply_id
+        description: TBD
+      - name: supply_cost
+        description: "Cost of the supply"
+      - name: product_id
+        description: "Stock keeping unit for the supply"
+      - name: is_persishable_supply
+        description: "Perishable status of the supply"
+        tests:
+          - accepted_values:
+              values: ["TRUE", "FALSE"]
+      - name: supply_name
+        description: "Name of the supply"
+
+  - name: stg__payments
+    description: "TBD"
+    columns:
+      - name: payment_id
+        description: "Unique identifier for each payment"
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: "Identifier for the order"
+      - name: payment_method
+        description: "Method of payment"
+        tests:
+          - accepted_values:
+              values: ["bank_transfer", "credit_card", "coupon", "gift_card"]
+      - name: payment_amount
+        description: "Amount of the payment"

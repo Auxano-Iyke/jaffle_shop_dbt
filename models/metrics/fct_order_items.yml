@@ -55,3 +55,32 @@ semantic_models:
         description: The count of the drink item.
         agg: sum_boolean
         expr: is_drink_item
+
+metrics:
+#SIMPLE TYPE METRICS
+  - name: "food_item_sold"
+    description: "count of food item sold"
+    type: simple
+    label: "food_item_sold"
+    type_params:
+      measure: is_food_item
+  - name: "drink_item_sold"
+    description: "count of drink item sold"
+    type: simple
+    label: "drink_item_sold"
+    type_params:
+      measure: is_drink_item
+saved_queries:
+  - name: order_items_metrics
+    description: order items metrics
+    query_params:
+      metrics:
+        - food_item_sold
+        - drink_item_sold
+      group_by:
+        - Dimension('order_items__product')
+    exports:
+      - name: order_item_metrics
+        config:
+          export_as: table
+          schema: jaffle_agg

@@ -208,4 +208,4 @@ saved_queries:
       - name: order_metrics
         config:
           export_as: table
-          schema: faith_tests_exports
+          schema: jaffle_agg

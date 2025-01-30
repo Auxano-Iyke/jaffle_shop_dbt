@@ -4,50 +4,50 @@ customers as (
 
     select * from {{ ref('stg__customers') }}
 
-),
+)
 
-orders as (
+, orders as (
 
     select * from {{ ref('fct_orders') }}
 
-),
+)
 
-order_items as (
+, order_items as (
 
     select * from {{ ref('fct_order_items') }}
-),
+)
 
-order_summary as (
+, order_summary as (
 
     select
-        customer_id,
+        orders.customer_id
 
-        count(distinct orders.order_id) as count_lifetime_orders,
-        count(distinct orders.order_id) > 1 as is_repeat_buyer,
-        min(orders.order_date) as first_ordered_at,
-        max(orders.order_date) as last_ordered_at,
-        sum(order_items.product_price) as lifetime_spend_pretax,
-        sum(orders.order_total) as lifetime_spend
+        , count(distinct orders.order_id) as count_lifetime_orders
+        , count(distinct orders.order_id) > 1 as is_repeat_buyer
+        , min(orders.order_date) as first_ordered_at
+        , max(orders.order_date) as last_ordered_at
+        , sum(order_items.product_price) as lifetime_spend_pretax
+        , sum(orders.order_total) as lifetime_spend
 
     from orders
-    
+
     left join order_items on orders.order_id = order_items.order_id
-    
+
     group by 1
 
-),
+)
 
-joined as (
+, joined as (
 
     select
-        customers.*,
-        order_summary.count_lifetime_orders,
-        order_summary.first_ordered_at,
-        order_summary.last_ordered_at,
-        order_summary.lifetime_spend_pretax,
-        order_summary.lifetime_spend,
+        customers.*
+        , order_summary.count_lifetime_orders
+        , order_summary.first_ordered_at
+        , order_summary.last_ordered_at
+        , order_summary.lifetime_spend_pretax
+        , order_summary.lifetime_spend
 
-        case
+        , case
             when order_summary.is_repeat_buyer then 'returning'
             else 'new'
         end as customer_type

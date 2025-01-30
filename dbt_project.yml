@@ -11,7 +11,7 @@ clean-targets:
   - dbt_packages
 
 models:
-  jaffle:
+  jaffle_shop_dbt:
     metrics:
       +schema: jaffle_agg
       +materialized: table

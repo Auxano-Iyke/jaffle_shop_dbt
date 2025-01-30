@@ -1,0 +1,69 @@
+[sqlfluff]
+# Set the SQL dialect to 'postgres' to match PostgreSQL-specific syntax
+dialect = postgres
+
+# Use the dbt templating engine for processing Jinja templating in dbt models
+templater = dbt
+
+# Set the maximum recursion depth for runaway templates (useful for preventing infinite loops in dbt models)
+runaway_limit = 10
+
+# Maximum line length for SQL queries to maintain readability
+max_line_length = 260
+
+# Specify that spaces, not tabs, should be used for indentation
+indent_unit = space
+
+# If the file size exceeds 400,000 bytes, it will be skipped during linting
+large_file_skip_byte_limit = 400000
+
+# Exclude specific rules during linting. In this case, ST06 (which handles string literal formatting) and LT14 (which deals with line length) are excluded
+exclude_rules = ST06,LT14
+
+[sqlfluff:indentation]
+# Define the number of spaces used for indentation (set to 4 spaces here)
+tab_space_size = 4
+
+[sqlfluff:layout:type:comma]
+# Enforce a style where commas are placed at the leading position of lines (after the first column) 
+# for better clarity in multi-line SQL statements.
+spacing_before = touch
+line_position = leading
+
+[sqlfluff:rules:capitalisation.keywords]
+# Set all SQL keywords (e.g., SELECT, WHERE, etc.) to be in lowercase
+capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+# Require explicit table aliases (e.g., `SELECT * FROM orders AS o`)
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+# Require explicit column aliases (e.g., `SELECT column_name AS new_name`)
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+# Disallow scalar subqueries (e.g., `SELECT (SELECT MAX(column) FROM table)`) to prevent ambiguity
+allow_scalar = False
+
+[sqlfluff:rules:capitalisation.identifiers]
+# Set all identifiers (e.g., column names, table names) to be in lowercase
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+# Set all SQL function names (e.g., SUM, COUNT) to be in lowercase
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+# Set all literal values (e.g., strings, numbers) to be in lowercase
+capitalisation_policy = lower
+
+[sqlfluff:rules:ambiguous.column_references]
+# Set the style for handling ambiguous column references in GROUP BY and ORDER BY clauses
+# Implicit column references are allowed (e.g., `GROUP BY column` instead of `GROUP BY table.column`)
+group_by_and_order_by_style = implicit
+
+[sqlfluff:rules:references.quoting]
+# Exclude common words from being quoted (e.g., date, id, name, etc.)
+# This is useful to prevent unnecessary quoting of certain column names.
+ignore_words = date,content,region,size,day,month,year,cluster,id,name,value,plan,cost,source,label,type,state,subscription,index,count,quarter,sum,list,returns,language,key,type,ref,length,options
